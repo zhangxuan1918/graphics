@@ -11,16 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Rendering module."""
+"""Voxels module."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from tensorflow_graphics.rendering import camera
-from tensorflow_graphics.rendering import opengl
-from tensorflow_graphics.rendering import reflectance
-from tensorflow_graphics.rendering import voxels
+from tensorflow_graphics.rendering.voxels import absorption
+from tensorflow_graphics.rendering.voxels import emission_absorption
+from tensorflow_graphics.rendering.voxels import visual_hull
 from tensorflow_graphics.util import export_api as _export_api
 
-# API contains submodules of tensorflow_graphics.rendering.
+# API contains submodules of tensorflow_graphics.rendering.voxels.
 __all__ = _export_api.get_modules()
