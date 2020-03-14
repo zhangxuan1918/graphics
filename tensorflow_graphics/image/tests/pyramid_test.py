@@ -50,12 +50,10 @@ class PyramidTest(test_case.TestCase):
     downsample = lambda image: pyramid.downsample(image, num_levels=4)
     tensor_shape = np.random.randint(1, 5, size=(4)).tolist()
     image_random_init = np.random.uniform(size=tensor_shape)
-    image_random = tf.convert_to_tensor(value=image_random_init)
 
-    downsample_random = downsample(image_random)
-
-    for level in downsample_random:
-      self.assert_jacobian_is_correct(image_random, image_random_init, level)
+    for level in range(4):
+      self.assert_jacobian_is_correct_fn(
+          lambda x, level=level: downsample(x)[level], [image_random_init])
 
   @parameterized.parameters(
       (((0.,),), ((0.,),)),
@@ -99,12 +97,10 @@ class PyramidTest(test_case.TestCase):
     upsample = lambda image: pyramid.upsample(image, num_levels=4)
     tensor_shape = np.random.randint(1, 5, size=(4)).tolist()
     image_random_init = np.random.uniform(size=tensor_shape)
-    image_random = tf.convert_to_tensor(value=image_random_init)
 
-    upsample_random = upsample(image_random)
-
-    for level in upsample_random:
-      self.assert_jacobian_is_correct(image_random, image_random_init, level)
+    for level in range(4):
+      self.assert_jacobian_is_correct_fn(
+          lambda x, level=level: upsample(x)[level], [image_random_init])
 
   @parameterized.parameters(
       (((0.,),), ((0., 0.), (0., 0.))),
@@ -179,13 +175,13 @@ class PyramidTest(test_case.TestCase):
 
   def test_split_jacobian_random(self):
     """Tests the Jacobian for random inputs."""
+    split = lambda image: pyramid.split(image, num_levels=4)
     tensor_shape = np.random.randint(1, 5, size=(4)).tolist()
     image_random_init = np.random.uniform(size=tensor_shape)
-    image_random = tf.convert_to_tensor(value=image_random_init)
-    split_random = pyramid.split(image_random, num_levels=4)
 
-    for level in split_random:
-      self.assert_jacobian_is_correct(image_random, image_random_init, level)
+    for level in range(4):
+      self.assert_jacobian_is_correct_fn(
+          lambda x, level=level: split(x)[level], [image_random_init])
 
   @parameterized.parameters(
       (0,),
